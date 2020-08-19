@@ -5,13 +5,14 @@
 
 
 
-
+[en]
 - | The script is b2k-character, ESX Version.
 - | A script that I translated and fixed
 - | In esx_kashacters you need to make a few adjustments.
 - | I use esx_eden_clotheshop so the character suits are stable.
 - | I made the optimizations myself, forgive me if I have mistakes
 
+[TR]
 - | Script b2k-character, ESX Version halidir.
 - | Kendi çevirdiğim ve fixlediğim bir script
 - | esx_kashacters de bir kaç düzenleme yapmalısınız.
@@ -20,5 +21,5 @@
 
 
 
-|   My Discord:         ZhoNNz();#1167
-|   Discord Server:   https://discord.gg/DTeRr4A
+1) |   My Discord:         ZhoNNz();#1167
+2) |   Discord Server:   https://discord.gg/DTeRr4A
