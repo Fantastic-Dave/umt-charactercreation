@@ -442,3 +442,10 @@ function TaskUpdateHeadOptions()
 	SetPedHeadOverlay(ped,4,data.makeup_1,0.99)
 	SetPedHeadOverlayColor(ped,4,0,0,0)
 end
+
+Citizen.CreateThread(function()   -- AFK cinematic off
+  while true do
+    N_0xf4f2c0d4ee209e20() 
+    Wait(1000)
+  end 
+end)
