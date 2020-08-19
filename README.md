@@ -5,7 +5,7 @@
 
 
 
-[en]
+[EN]
 - | The script is b2k-character, ESX Version.
 - | A script that I translated and fixed
 - | In esx_kashacters you need to make a few adjustments.
