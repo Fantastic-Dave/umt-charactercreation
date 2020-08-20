@@ -443,9 +443,170 @@ function TaskUpdateHeadOptions()
 	SetPedHeadOverlayColor(ped,4,0,0,0)
 end
 
-Citizen.CreateThread(function()   -- AFK cinematic off
-  while true do
-    N_0xf4f2c0d4ee209e20() 
-    Wait(1000)
-  end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+----- karakter görüş
+
+
+local drawable_names = {"face", "masks", "hair", "torsos", "legs", "bags", "shoes", "neck", "undershirts", "vest", "decals", "jackets"}
+
+
+RegisterNUICallback('switchcam', function(data, cb)
+    CustomCamera(data['name'])
+    cb('ok')
 end)
+
+RegisterNUICallback('toggleclothes', function(data, cb)
+    ToggleProps(data)
+    cb('ok')
+end)
+
+function SwitchCam(name)
+	local ped = PlayerPedId()
+    if name == "cam" then
+        TogRotation()
+        return
+    end
+
+    local pos = GetEntityCoords(ped, true)
+    local bonepos = false
+    if (name == "head") then
+        bonepos = GetPedBoneCoords(ped, 31086)
+        bonepos = vector3(bonepos.x - 0.1, bonepos.y + 0.4, bonepos.z + 0.05)
+    end
+    if (name == "torso") then
+        bonepos = GetPedBoneCoords(ped, 11816)
+        bonepos = vector3(bonepos.x - 0.4, bonepos.y + 2.2, bonepos.z + 0.2)
+    end
+    if (name == "leg") then
+        bonepos = GetPedBoneCoords(ped, 46078)
+        bonepos = vector3(bonepos.x - 0.1, bonepos.y + 1, bonepos.z)
+    end
+
+    SetCamCoord(cam, bonepos.x, bonepos.y, bonepos.z)
+    SetCamRot(cam, 0.0, 0.0, 180.0)
+end
+
+function ToggleProps(data)
+    local name = data["name"]
+
+    selectedValue = has_value(drawable_names, name)
+    if (selectedValue > -1) then
+        if (toggleClothing[name] ~= nil) then
+            SetPedComponentVariation(
+                ped,
+                tonumber(selectedValue),
+                tonumber(toggleClothing[name][1]),
+                tonumber(toggleClothing[name][2]), 2)
+            toggleClothing[name] = nil
+        else
+            toggleClothing[name] = {
+                GetPedDrawableVariation(ped, tonumber(selectedValue)),
+                GetPedTextureVariation(ped, tonumber(selectedValue))
+            }
+
+            local value = -1
+            if name == "undershirts" or name == "torsos" then
+                value = 15
+                if name == "undershirts" and GetEntityModel(PlayerPedId()) == GetHashKey('mp_f_freemode_01') then
+                    value = -1
+                end
+            end
+            if name == "legs" then
+                value = 14
+            end
+
+            SetPedComponentVariation(
+                ped,
+                tonumber(selectedValue),
+                value, 0, 2)
+        end
+    else
+        selectedValue = has_value(prop_names, name)
+        if (selectedValue > -1) then
+            if (toggleClothing[name] ~= nil) then
+                SetPedPropIndex(
+                    ped,
+                    tonumber(selectedValue),
+                    tonumber(toggleClothing[name][1]),
+                    tonumber(toggleClothing[name][2]), true)
+                toggleClothing[name] = nil
+            else
+                toggleClothing[name] = {
+                    GetPedPropIndex(ped, tonumber(selectedValue)),
+                    GetPedPropTextureIndex(ped, tonumber(selectedValue))
+                }
+                ClearPedProp(ped, tonumber(selectedValue))
+            end
+        end
+    end
+end
+
+function SaveToggleProps()
+    for k in pairs(toggleClothing) do
+        local name  = k
+        selectedValue = has_value(drawable_names, name)
+        if (selectedValue > -1) then
+            SetPedComponentVariation(
+                ped,
+                tonumber(selectedValue),
+                tonumber(toggleClothing[name][1]),
+                tonumber(toggleClothing[name][2]), 2)
+            toggleClothing[name] = nil
+        else
+            selectedValue = has_value(prop_names, name)
+            if (selectedValue > -1) then
+                SetPedPropIndex(
+                    ped,
+                    tonumber(selectedValue),
+                    tonumber(toggleClothing[name][1]),
+                    tonumber(toggleClothing[name][2]), true)
+                toggleClothing[name] = nil
+            end
+        end
+    end
+end
+
+
+
+
+function CustomCamera(position)
+    if customCam or position == "torso" then
+        FreezePedCameraRotation(ped, false)
+        SetCamActive(cam, false)
+        RenderScriptCams(false,  false,  0,  true,  true)
+        if (DoesCamExist(cam)) then
+            DestroyCam(cam, false)
+        end
+        customCam = false
+    else
+        if (DoesCamExist(cam)) then
+            DestroyCam(cam, false)
+        end
+
+        local pos = GetEntityCoords(ped, true)
+        SetEntityRotation(ped, 0.0, 0.0, 0.0, 1, true)
+        FreezePedCameraRotation(ped, true)
+
+        cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
+        SetCamCoord(cam, ped)
+        SetCamRot(cam, 0.0, 0.0, 0.0)
+
+        SetCamActive(cam, true)
+        RenderScriptCams(true,  false,  0,  true,  true)
+
+        SwitchCam(position)
+        customCam = true
+    end
+end
