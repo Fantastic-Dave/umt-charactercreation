@@ -266,7 +266,7 @@ AddEventHandler('playerSpawned', function()
 		if firstSpawn then
 			ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
 				if skin == nil then
-					TriggerEvent('skinchanger:loadSkin', {sex = 0}, OpenSaveableMenu)
+					TriggerEvent('skinchanger:loadSkin', {sex = 0})
 				else
 					TriggerEvent('skinchanger:loadSkin', skin)
 				end
@@ -290,20 +290,20 @@ AddEventHandler('esx_skin:setLastSkin', function(skin)
 	lastSkin = skin
 end)
 
--- RegisterNetEvent('esx_skin:openMenu')
--- AddEventHandler('esx_skin:openMenu', function(submitCb, cancelCb)
--- 	OpenMenu(submitCb, cancelCb, nil)
--- end)
+RegisterNetEvent('esx_skin:openMenu')
+AddEventHandler('esx_skin:openMenu', function(submitCb, cancelCb)
+	OpenMenu(submitCb, cancelCb, nil)
+end)
 
--- RegisterNetEvent('esx_skin:openRestrictedMenu')
--- AddEventHandler('esx_skin:openRestrictedMenu', function(submitCb, cancelCb, restrict)
--- 	OpenMenu(submitCb, cancelCb, restrict)
--- end)
+RegisterNetEvent('esx_skin:openRestrictedMenu')
+AddEventHandler('esx_skin:openRestrictedMenu', function(submitCb, cancelCb, restrict)
+	OpenMenu(submitCb, cancelCb, restrict)
+end)
 
--- RegisterNetEvent('esx_skin:openSaveableMenu')
--- AddEventHandler('esx_skin:openSaveableMenu', function(submitCb, cancelCb)
--- 	OpenSaveableMenu(submitCb, cancelCb, nil)
--- end)
+RegisterNetEvent('esx_skin:openSaveableMenu')
+AddEventHandler('esx_skin:openSaveableMenu', function(submitCb, cancelCb)
+	OpenSaveableMenu(submitCb, cancelCb, nil)
+end)
 
 RegisterNetEvent('esx_skin:setLastSkinNewAcc')
 AddEventHandler('esx_skin:setLastSkinNewAcc', function(NewAcc)
@@ -311,10 +311,10 @@ AddEventHandler('esx_skin:setLastSkinNewAcc', function(NewAcc)
 end)
 
 
--- RegisterNetEvent('esx_skin:openSaveableRestrictedMenu')
--- AddEventHandler('esx_skin:openSaveableRestrictedMenu', function(submitCb, cancelCb, restrict)
--- 	OpenSaveableMenu(submitCb, cancelCb, restrict)
--- end)
+RegisterNetEvent('esx_skin:openSaveableRestrictedMenu')
+AddEventHandler('esx_skin:openSaveableRestrictedMenu', function(submitCb, cancelCb, restrict)
+	OpenSaveableMenu(submitCb, cancelCb, restrict)
+end)
 
 RegisterNetEvent('esx_skin:requestSaveSkin')
 AddEventHandler('esx_skin:requestSaveSkin', function()
