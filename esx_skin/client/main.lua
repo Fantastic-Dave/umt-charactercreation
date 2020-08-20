@@ -269,6 +269,7 @@ AddEventHandler('playerSpawned', function()
 					TriggerEvent('skinchanger:loadSkin', {sex = 0})
 				else
 					TriggerEvent('skinchanger:loadSkin', skin)
+					TriggerEvent("ToogleBackCharacter")
 				end
 			end)
 
